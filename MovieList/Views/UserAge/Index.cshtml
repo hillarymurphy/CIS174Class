@@ -1,0 +1,39 @@
+﻿@model MovieList.Models.UserAgeModel
+
+@{
+    ViewBag.Title = "Age Calculator";
+}
+
+<div class="container">
+    <main>
+        <form asp-controller="UserAge" asp-action="Index" method="post" class="form-horizontal">
+            <div class="row">
+                <label asp-for="Name" class="control-label col-3">Name:</label>
+                <input asp-for="Name" class="form-control col-3" />
+                <span asp-validation-for="@Model.Name" class="text-danger col"></span>
+            </div>
+            <div class="row">
+                <label asp-for="BirthYear" class="control-label col-3">BirthYear:</label>
+                <input asp-for="BirthYear" class="form-control col-3" />
+                <span asp-validation-for="@Model.BirthYear" class="text-danger col"></span>
+            </div>
+            <div class="row">
+                <div class="col offset-3 pl-0">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a asp-controller="UserAge" asp-action="Index" class="btn btn-outline-secondary">Clear</a>
+                </div>
+            </div>
+            <div class="row">
+            </div>
+            <div class="row">
+                <label class="control-label col-3">Name:</label>
+                <input value=@ViewBag.Name readonly class="form-control col-3" />
+            </div>
+            <div class="row">
+                <label class="control-label col-3">Age by December 31st:</label>
+                <input value="@ViewBag.currentAge" readonly class="form-control col-3" />
+            </div>
+        </form>
+        <a asp-controller="Home" asp-action="Index">Return to Project Home</a>
+    </main>
+</div>

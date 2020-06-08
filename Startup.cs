@@ -28,6 +28,7 @@ namespace MovieList
             services.AddControllersWithViews();
             //enabling dependency injection by using "MovieContext" instead of hard coding string here
             services.AddDbContext<MovieContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MovieContext")));
+            services.AddDbContext<ContactContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ContactContext")));
             // make urls lowercase and end with a trailing slash
             services.AddRouting(options => { options.LowercaseUrls = true; options.AppendTrailingSlash = true; });
         }

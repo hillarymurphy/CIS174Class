@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MovieList.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MovieList.Controllers
 {
@@ -15,6 +16,14 @@ namespace MovieList.Controllers
         public MovieController(MovieContext ctx)
         {
             context = ctx;
+        }
+
+        [HttpGet]
+        public IActionResult Index()
+        {
+            ViewBag.Action = "Index";
+            var movies = context.Movies.Include(m => m.Genre).OrderBy(m => m.Name).ToList();
+            return View(movies);
         }
 
         [HttpGet]
@@ -49,7 +58,7 @@ namespace MovieList.Controllers
                     context.Movies.Update(movie);
                 }
                 context.SaveChanges();
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Movie");
             }
             else
             {
@@ -71,7 +80,8 @@ namespace MovieList.Controllers
         {
             context.Movies.Remove(movie);
             context.SaveChanges();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Movie");
         }
+
     }
 }

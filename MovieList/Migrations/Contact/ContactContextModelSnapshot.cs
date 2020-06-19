@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MovieList.Models;
+using MovieList.Areas.ContactList.Models;
 
 namespace MovieList.Migrations.Contact
 {
@@ -18,7 +18,7 @@ namespace MovieList.Migrations.Contact
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("MovieList.Models.Contact", b =>
+            modelBuilder.Entity("MovieList.Areas.ContactList.Models.Contact", b =>
                 {
                     b.Property<int>("ContactId")
                         .ValueGeneratedOnAdd()

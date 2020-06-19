@@ -28,7 +28,7 @@ namespace MovieList
             services.AddControllersWithViews();
             //enabling dependency injection by using "MovieContext" instead of hard coding string here
             services.AddDbContext<MovieContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MovieContext")));
-            services.AddDbContext<ContactContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ContactContext")));
+            services.AddDbContext<MovieList.Areas.ContactList.Models.ContactContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ContactContext")));
             // make urls lowercase and end with a trailing slash
             services.AddRouting(options => { options.LowercaseUrls = true; options.AppendTrailingSlash = true; });
         }
@@ -48,7 +48,6 @@ namespace MovieList
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
 
             app.UseAuthorization();
@@ -56,6 +55,28 @@ namespace MovieList
             // Updated to have optional section option (slug)
             app.UseEndpoints(endpoints =>
             {
+                // Admin Area Routing
+                endpoints.MapAreaControllerRoute(
+                    name: "admin",
+                    areaName: "Admin",
+                    pattern: "Admin/{controller=Home}/{action=Index}/{id?}");
+
+                // Contact List Area Routing
+                endpoints.MapAreaControllerRoute(
+                    name: "contactlist",
+                    areaName: "ContactList",
+                    pattern: "ContactList/{controller=Home}/{action=Index}/{id?}/{slug?}");
+                
+                // Future Value Area Routing
+                endpoints.MapAreaControllerRoute(
+                    name: "futurevalue",
+                    areaName: "FutureValue",
+                    pattern: "FutureValue/{controller=Home}/{action=Index}/{id?}/{slug?}");
+
+                //endpoints.MapControllerRoute(
+                //    name: "custom",
+                //    pattern: "[controller]/[action]/{cat}/{page}");
+                
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}/{slug?}");

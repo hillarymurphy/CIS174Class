@@ -1,0 +1,15 @@
+﻿@model MovieList.Areas.ContactList.Models.Contact
+
+@{
+    ViewBag.Title = "Delete Contact";
+}
+
+<h2>@ViewBag.Title</h2>
+<h3>@Model.Name</h3>
+
+<form asp-area="ContactList" asp-action="Delete" method="post">
+    <input type="hidden" asp-for="ContactId" />
+
+    <button type="submit" class="btn btn-primary">Delete</button>
+    <a asp-area="ContactList" asp-controller="Contact" asp-action="Index" class="btn btn-primary">Cancel</a>
+</form>

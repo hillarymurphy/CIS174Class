@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewBag.Title</title>
+    <title>Age Calculator</title>
     <link rel="stylesheet" type="text/css"
           href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/custom.css" />
@@ -19,7 +19,7 @@
 <body>
     <div class="container">
         <nav class="navbar navbar-expand-sm bg-light navbar-light fixed-top">
-            <a class="navbar-brand" href="/">@ViewBag.Title</a>
+            <a class="navbar-brand" href="/">Future Value</a>
             <button class="navbar-toggler" type="button"
                     data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -37,15 +37,6 @@
                         </li>
                         <li class="nav-item">
                             <a asp-area="FutureValue" asp-controller="userage" asp-action="index" class="nav-link">User Age</a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-area="" asp-controller="home" asp-action="default" class="nav-link">Default Routing</a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-area="" asp-controller="home" asp-action="attribute" class="nav-link">Attribute Routing</a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-area="" asp-controller="home" asp-action="custom" class="nav-link" asp-route-id="Custom">Custom Routing</a>
                         </li>
                     </ul>
                 </div>

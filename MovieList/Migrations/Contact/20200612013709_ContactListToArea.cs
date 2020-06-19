@@ -2,7 +2,7 @@
 
 namespace MovieList.Migrations.Contact
 {
-    public partial class AddContactDatabase : Migration
+    public partial class ContactListToArea : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

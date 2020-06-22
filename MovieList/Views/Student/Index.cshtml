@@ -1,0 +1,35 @@
+﻿@model Student
+@{
+    ViewBag.Title = "Student Access Level";
+}
+
+<h2>Enter Access Level </h2>
+
+
+@if (ViewBag.Access == null)
+{
+    <h5> Please enter access level between 1-10.</h5>
+}
+else
+{
+    <div class="text-warning">
+        <h5>Input is invalid. Please enter Access Level 1 - 10.</h5>
+    </div>
+}
+<div class="container">
+    <main>
+        <form asp-area="" asp-controller="Student" asp-action="List" method="post" class="form-horizontal">
+            <div class="row">
+                <label asp-route-id="1" class="control-label col-3">Enter Access Level:</label>
+                <input asp-route-id="1" name="id" class="form-control col-3" required="required" />
+            </div>
+            <div class="row">
+                <div class="col offset-3 pl-0">
+                    <button type="submit" class="btn btn-primary" asp-area="" asp-controller="Student" asp-action="List" method="post">Submit</button>
+                </div>
+            </div>
+        </form>
+    </main>
+</div>
+
+

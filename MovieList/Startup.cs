@@ -30,6 +30,7 @@ namespace MovieList
             services.AddDbContext<MovieContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MovieContext")));
             services.AddDbContext<MovieList.Areas.ContactList.Models.ContactContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ContactContext")));
             services.AddDbContext<StudentContext>(options => options.UseSqlServer(Configuration.GetConnectionString("StudentContext")));
+            services.AddDbContext <MovieList.Areas.OlympicGames.Models.CountryContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CountryContext")));
             // make urls lowercase and end with a trailing slash
             services.AddRouting(options => { options.LowercaseUrls = true; options.AppendTrailingSlash = true; });
         }
@@ -74,10 +75,12 @@ namespace MovieList
                     areaName: "FutureValue",
                     pattern: "FutureValue/{controller=Home}/{action=Index}/{id?}/{slug?}");
 
-                //endpoints.MapControllerRoute(
-                //    name: "custom",
-                //    pattern: "[controller]/[action]/{cat}/{page}");
-                
+                // Olympic Games Area Routing
+                endpoints.MapAreaControllerRoute(
+                    name: "olymicgames",
+                    areaName: "OlympicGames",
+                    pattern: "OlympicGames/{controller=Home}/{action=Index}/sporttype/{activeSportType}/cat/{activeCat}");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}/{slug?}");

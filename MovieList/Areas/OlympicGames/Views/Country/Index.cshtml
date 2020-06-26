@@ -1,0 +1,49 @@
+﻿@model MovieList.Areas.OlympicGames.Models.CountryListViewModel
+@{
+    ViewData["Title"] = "Olympic Teams";
+}
+<div class="row">
+    <div class="col-sm-3">
+        <h3 class="mt-3">Sport Type</h3>
+        <div class="list-group">
+            @foreach (MovieList.Areas.OlympicGames.Models.SportType sporttype in Model.SportTypes)
+            {
+                <a asp-action="Index"
+                   asp-route-activeSportType="@sporttype.SportTypeID"
+                   asp-route-activeCat="@Model.ActiveCat"
+                   class="list-group-item
+                       @Model.CheckActiveSportType(sporttype.SportTypeID)">@sporttype.Name</a>
+                }
+        </div>
+        <h3 class="mt-3">Division</h3>
+        <div class="list-group">
+            @foreach (MovieList.Areas.OlympicGames.Models.Category cat in Model.Categorys)
+            {
+                <a asp-action="Index"
+                   asp-route-activeSportType="@Model.ActiveSportType"
+                   asp-route-activeCat="@cat.CategoryID"
+                   class="list-group-item
+                       @Model.CheckActiveCat(cat.CategoryID)">@cat.Name</a>
+                }
+        </div>
+    </div>
+    <div class="col-sm-9">
+        <ul class="list-inline">
+            @foreach (MovieList.Areas.OlympicGames.Models.Country country in Model.Countrys)
+            {
+                <li class="list-inline-item">
+                    <form asp-action="Details" method="post" asp-route-id="@country.CountryID">
+                        <button type="submit" class="bg-white border-0">
+                            <img src="~/images/@country.LogoImage" alt="@country.Name"
+                                 title="@country.Name | @country.SportType.Name @country.Category.Name" />
+                        </button>
+
+                        <input type="hidden" asp-for="@country.CountryID" asp-route-id="@country.CountryID" />
+                        <input type="hidden" asp-for="ActiveSportType" />
+                        <input type="hidden" asp-for="ActiveCat" />
+                    </form>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

@@ -23,7 +23,26 @@ namespace MovieList.Areas.OlympicGames.Controllers
         public IActionResult Index(string activeSportType = "all",
                                    string activeCat = "all")
         {
-            var data = new CountryListViewModel
+            var session = new CountrySession(HttpContext.Session);
+            session.SetActiveSportType(activeSportType);
+            session.SetActiveCat(activeCat);
+
+            // if no count in session, get cookie
+            int? count = session.GetMyCountryCount();
+            if (count == null)
+            {
+                var cookies = new CountryCookies(Request.Cookies);
+                string[] ids = cookies.GetMyCountryIds();
+
+                List<Country> mycountrys = new List<Country>();
+                if (ids.Length > 0)
+                    mycountrys = context.Countrys.Include(t => t.SportType)
+                        .Include(t => t.Category)
+                        .Where(t => ids.Contains(t.CountryID)).ToList();
+                session.SetMyCountrys(mycountrys);
+            }
+
+            var model = new CountryListViewModel
             {
                 ActiveSportType = activeSportType,
                 ActiveCat = activeCat,
@@ -38,36 +57,54 @@ namespace MovieList.Areas.OlympicGames.Controllers
             if (activeCat != "all")
                 query = query.Where(
                     t => t.Category.CategoryID.ToLower() == activeCat.ToLower());
-            data.Countrys = query.ToList();
+            model.Countrys = query.ToList();
 
-            return View(data);
-        }
-
-        [Route("[area]/Countrys/sporttype/{activeSportType}/cat/{activeCat}")]
-        [HttpPost]
-        public IActionResult Details(CountryViewModel model)
-        {
-            Utility.LogCountryClick(model.Country.CountryID);
-
-            TempData["ActiveSportType"] = model.ActiveSportType;
-            TempData["ActiveCat"] = model.ActiveCat;
-            return RedirectToAction("Details", new { ID = model.Country.CountryID });
+            return View(model);
         }
 
         [Route("[area]/[controller]/Details/{id?}")]
-        [HttpPost]
+        [HttpGet]
         public IActionResult Details(string id)
         {
+            var session = new CountrySession(HttpContext.Session);
             var model = new CountryViewModel
             {
                 Country = context.Countrys
                     .Include(t => t.SportType)
                     .Include(t => t.Category)
                     .FirstOrDefault(t => t.CountryID == id),
-                ActiveSportType = TempData?["ActiveSportType"]?.ToString() ?? "all",
-                ActiveCat = TempData?["ActiveCat"]?.ToString() ?? "all"
+                ActiveSportType = session.GetActiveSportType(),
+                ActiveCat = session.GetActiveCat()
             };
             return View(model);
+        }
+
+        [Route("[area]/[controller]/Favorites/{id?}")]
+        [HttpPost]
+        public RedirectToActionResult Add(CountryViewModel model)
+        {
+            model.Country = context.Countrys
+                .Include(t => t.SportType)
+                .Include(t => t.Category)
+                .Where(t => t.CountryID == model.Country.CountryID)
+                .FirstOrDefault();
+
+            var session = new CountrySession(HttpContext.Session);
+            var countrys = session.GetMyCountrys();
+            countrys.Add(model.Country);
+            session.SetMyCountrys(countrys);
+
+            var cookies = new CountryCookies(Response.Cookies);
+            cookies.SetMyCountryIds(countrys);
+
+            TempData["message"] = $"{model.Country.Name} added to your favorites";
+
+            return RedirectToAction("Index",
+                new
+                {
+                    ActiveSportType = session.GetActiveSportType(),
+                    ActiveCat = session.GetActiveCat()
+                });
         }
     }
 }

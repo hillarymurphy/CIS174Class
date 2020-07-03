@@ -1,0 +1,43 @@
+﻿@model CountryListViewModel
+@{
+    ViewData["Title"] = "Favorites";
+}
+
+<div class="text-center">
+    <h2>My Favorites</h2>
+    <form asp-area="OlympicGames" asp-action="Delete" method="post">
+        <a asp-area="OlympicGames" asp-action="Index" asp-controller="Country" class="btn btn-primary"
+           asp-route-activeConf="@Model.ActiveSportType"
+           asp-route-activeDiv="@Model.ActiveCat">
+            Back to Home Page
+        </a>
+        <button type="submit" class="btn btn-primary">
+            Clear Favorites
+        </button>
+    </form>
+    <br />
+</div>
+
+
+<div class="row">
+    <div class="col-8 offset-2">
+        <ul class="list-group">
+            @foreach (Country country in Model.Countrys)
+            {
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <img src="~/images/@country.LogoImage" alt="" />
+                        </div>
+                        <div class="col-sm-4">
+                            @country.Name
+                        </div>
+                        <div class="col-sm-4">
+                            @country.SportType.Name @country.Category.Name
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

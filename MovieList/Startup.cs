@@ -25,7 +25,10 @@ namespace MovieList
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            // adding functionality to add session state - must be before controlerswithviews
+            services.AddMemoryCache();
+            services.AddSession();
+            services.AddControllersWithViews().AddNewtonsoftJson();
             //enabling dependency injection by using "MovieContext" instead of hard coding string here
             services.AddDbContext<MovieContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MovieContext")));
             services.AddDbContext<MovieList.Areas.ContactList.Models.ContactContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ContactContext")));
@@ -53,6 +56,9 @@ namespace MovieList
             app.UseRouting();
 
             app.UseAuthorization();
+
+            // adding set up for using session state - must be before UseEndpoints
+            app.UseSession();
 
             // Updated to have optional section option (slug)
             app.UseEndpoints(endpoints =>

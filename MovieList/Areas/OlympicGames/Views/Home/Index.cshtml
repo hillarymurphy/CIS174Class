@@ -32,16 +32,10 @@
             @foreach (MovieList.Areas.OlympicGames.Models.Country country in Model.Countrys)
             {
                 <li class="list-inline-item">
-                    <form asp-action="Details" method="post" asp-route-id="@country.CountryID">
-                        <button type="submit" class="bg-white border-0">
-                            <img src="~/images/@country.LogoImage" alt="@country.Name"
-                                 title="@country.Name | @country.SportType.Name @country.Category.Name" />
-                        </button>
-
-                        <input type="hidden" asp-for="@country.CountryID" asp-route-id="@country.CountryID" />
-                        <input type="hidden" asp-for="ActiveSportType" />
-                        <input type="hidden" asp-for="ActiveCat" />
-                    </form>
+                    <a asp-action="Details" method="post" asp-route-id="@country.CountryID">
+                        <img src="~/images/@country.LogoImage" alt="@country.Name"
+                             title="@country.Name | @country.SportType.Name @country.Category.Name" />
+                    </a>
                 </li>
             }
         </ul>

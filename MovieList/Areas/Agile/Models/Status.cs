@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MovieList.Areas.OlympicGames.Models
+namespace MovieList.Areas.Agile.Models
 {
-    [Area("OlymicGames")]
-    public class SportType
+    [Area("Agile")]
+    public class Status
     {
-        public string SportTypeID { get; set; }
+        public string StatusId { get; set; }
         public string Name { get; set; }
     }
 }

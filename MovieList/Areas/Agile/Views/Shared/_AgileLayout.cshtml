@@ -46,27 +46,8 @@
                 </div>
             </nav>
         </nav>
-        @* show any message in TempData*@
-        @if (TempData["message"] != null)
-        {
-            <h4 class="bg-success p-2">@TempData["message"]</h4>
-        }
-
-        @* show link to Favorites page unless on Favorites page *@
-        @if (!ViewContext.View.Path.Contains("Favorites"))
-        {
-            var session = new CountrySession(Context.Session);
-            <h5 class="bg-info p-2">
-                <a asp-area="OlympicGames" asp-controller="Favorites" asp-action="Index"
-                   class="text-white">My Favorite Countries</a>
-
-                @* get number of Favorite countries from session and display in badge *@
-                <span class="badge badge-light">@(session.GetMyCountryCount())</span>
-            </h5>
-        }
         <div>
             @RenderBody()
         </div>
-    </div>
-</body>
-</html>
+        </body>
+    </html>

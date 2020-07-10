@@ -25,12 +25,16 @@ namespace MovieList
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            // adding functionality to add session state - must be before controlerswithviews
+            services.AddMemoryCache();
+            services.AddSession();
+            services.AddControllersWithViews().AddNewtonsoftJson();
             //enabling dependency injection by using "MovieContext" instead of hard coding string here
             services.AddDbContext<MovieContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MovieContext")));
             services.AddDbContext<MovieList.Areas.ContactList.Models.ContactContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ContactContext")));
             services.AddDbContext<StudentContext>(options => options.UseSqlServer(Configuration.GetConnectionString("StudentContext")));
             services.AddDbContext <MovieList.Areas.OlympicGames.Models.CountryContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CountryContext")));
+            services.AddDbContext<MovieList.Areas.Agile.Models.TicketContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TicketContext")));
             // make urls lowercase and end with a trailing slash
             services.AddRouting(options => { options.LowercaseUrls = true; options.AppendTrailingSlash = true; });
         }
@@ -54,6 +58,9 @@ namespace MovieList
 
             app.UseAuthorization();
 
+            // adding set up for using session state - must be before UseEndpoints
+            app.UseSession();
+
             // Updated to have optional section option (slug)
             app.UseEndpoints(endpoints =>
             {
@@ -62,6 +69,12 @@ namespace MovieList
                     name: "admin",
                     areaName: "Admin",
                     pattern: "Admin/{controller=Home}/{action=Index}/{id?}");
+
+                // Agile Area Routing
+                endpoints.MapAreaControllerRoute(
+                    name: "agile",
+                    areaName: "Agile",
+                    pattern: "Agile/{controller=Home}/{action=Index}/{id?}/{slug?}");
 
                 // Contact List Area Routing
                 endpoints.MapAreaControllerRoute(

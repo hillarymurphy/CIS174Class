@@ -20,18 +20,20 @@ namespace MovieList.Areas.OlympicGames.Controllers
 
         [Route("[area]/[controller]")]
         [HttpGet]
-        public IActionResult Index(string activeSportType = "all",
-                                   string activeCat = "all")
+        public IActionResult Index(CountryListViewModel model)
         {
+            model.SportTypes = context.SportTypes.ToList();
+            model.Categorys = context.Categorys.ToList();
+
             var session = new CountrySession(HttpContext.Session);
-            session.SetActiveSportType(activeSportType);
-            session.SetActiveCat(activeCat);
+            session.SetActiveSportType(model.ActiveSportType);
+            session.SetActiveCat(model.ActiveCat);
 
             // if no count in session, get cookie
             int? count = session.GetMyCountryCount();
             if (count == null)
             {
-                var cookies = new CountryCookies(Request.Cookies);
+                var cookies = new CountryCookies(HttpContext.Request.Cookies);
                 string[] ids = cookies.GetMyCountryIds();
 
                 List<Country> mycountrys = new List<Country>();
@@ -42,21 +44,13 @@ namespace MovieList.Areas.OlympicGames.Controllers
                 session.SetMyCountrys(mycountrys);
             }
 
-            var model = new CountryListViewModel
-            {
-                ActiveSportType = activeSportType,
-                ActiveCat = activeCat,
-                SportTypes = context.SportTypes.ToList(),
-                Categorys = context.Categorys.ToList()
-            };
-
             IQueryable<Country> query = context.Countrys;
-            if (activeSportType != "all")
+            if (model.ActiveSportType != "all")
                 query = query.Where(
-                    t => t.SportType.SportTypeID.ToLower() == activeSportType.ToLower());
-            if (activeCat != "all")
+                    t => t.SportType.SportTypeID.ToLower() == model.ActiveSportType.ToLower());
+            if (model.ActiveCat != "all")
                 query = query.Where(
-                    t => t.Category.CategoryID.ToLower() == activeCat.ToLower());
+                    t => t.Category.CategoryID.ToLower() == model.ActiveCat.ToLower());
             model.Countrys = query.ToList();
 
             return View(model);

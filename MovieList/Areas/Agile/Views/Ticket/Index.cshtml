@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Ticket>
+@{
+    ViewBag.Title = "Agile Sprints";
+}
+    <div class="row">
+        <div class="col-sm-2">
+            <form asp_area="Agile" asp-action="Filter" method="post">
+                <div class="form-group">
+                    <label>Status:</label>
+                    <select name="filter" class="form-control" asp-area="Agile"
+                            asp-items="@(new SelectList(ViewBag.Statuses,
+                    "StatusId", "Name", ViewBag.Filters.StatusId))">
+                        <option value="all">All</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <a asp-area="Agile" asp-action="Index" asp-route-id="" class="btn btn-primary">Clear</a>
+            </form>
+        </div>
+        <div class="col-sm-10">
+
+            <a asp-area="Agile" asp-action="Add"><b>Add new task</b></a>
+
+            <table class="table table-bordered table-striped mt-2">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Sprint Number</th>
+                        <th>Point Value</th>
+                        <th>Status</th>
+                        <th class="w-25"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (MovieList.Areas.Agile.Models.Ticket ticket in Model)
+                    {
+                        <tr>
+                            <td>@ticket.TicketName</td>
+                            <td>@ticket.Description</td>
+                            <td>@ticket.Sprint</td>
+                            <td>@ticket.Point</td>
+                            <td>@ticket.Status.Name</td>
+                            <td>
+                                <form asp-area="Agile" asp-action="Edit" method="post"
+                                      asp-route-id="@ViewBag.Filters.FilterString"
+                                      class="mr-2">
+
+                                    <input type="hidden"
+                                           name="@nameof(Ticket.TicketId)" value="@ticket.TicketId" />
+
+                                    <button type="submit" name="@nameof(Ticket.StatusId)"
+                                            value="todo" class="btn btn-light btn-sm">
+                                        To Do
+                                    </button>
+
+                                    <button type="submit" name="@nameof(Ticket.StatusId)"
+                                            value="inprogress" class="btn btn-light btn-sm">
+                                        In Progress
+                                    </button>
+
+                                    <button type="submit" name="@nameof(Ticket.StatusId)"
+                                            value="qa" class="btn btn-light btn-sm">
+                                        Quality Assurance
+                                    </button>
+
+                                    <button type="submit" name="@nameof(Ticket.StatusId)"
+                                            value="done" class="btn btn-light btn-sm">
+                                        Done
+                                    </button>
+
+                                    <button type="submit"
+                                            class="btn btn-primary btn-sm">
+                                        Delete
+                                    </button>
+                                </form>
+            </td>
+            </tr>
+        }
+                    </tbody>
+                    </table>
+                </div>
+</div>

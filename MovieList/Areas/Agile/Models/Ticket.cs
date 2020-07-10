@@ -7,22 +7,25 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MovieList.Areas.Agile.Models
 {
-    [Area("Agile")]
     public class Ticket
     {
         public int TicketId { get; set; }
 
         [Required(ErrorMessage = "Please enter a name.")]
+        [StringLength(50)]
         public string TicketName { get; set; }
 
         [Required(ErrorMessage = "Please enter a description.")]
+        [StringLength(250)]
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Please enter a sprint number.")]
+        [Range(1, 52)]
         public int? Sprint { get; set; }
 
         [Required(ErrorMessage = "Please enter a point value.")]
-        public int? Point { get; set; }
+        [Remote("CheckPoint", "Validation")]
+        public int Point { get; set; }
 
         [Required(ErrorMessage = "Please select a status.")]
         public string StatusId { get; set; }

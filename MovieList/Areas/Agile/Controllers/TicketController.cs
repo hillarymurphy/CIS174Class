@@ -72,7 +72,6 @@ namespace MovieList.Areas.Agile.Controllers
                 string newStatusId = selected.StatusId;
                 ViewBag.Statuses = context.Statuses.ToList();
                 selected = context.Tickets.Find(selected.TicketId);
-                // selected.Status = context.Tickets.Find
                 selected.StatusId = newStatusId;
                 context.Tickets.Update(selected);
             }

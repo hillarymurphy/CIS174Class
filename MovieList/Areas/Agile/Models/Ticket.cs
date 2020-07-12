@@ -28,7 +28,7 @@ namespace MovieList.Areas.Agile.Models
         public int Point { get; set; }
 
         [Required(ErrorMessage = "Please select a status.")]
-        public string StatusId { get; set; }
-        public Status Status { get; set; }
+        public string StatusId { get; set; }        // foreign key property
+        public Status Status { get; set; }          // navigation property
     }
 }

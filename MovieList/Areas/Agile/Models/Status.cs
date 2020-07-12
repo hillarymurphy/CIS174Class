@@ -11,5 +11,7 @@ namespace MovieList.Areas.Agile.Models
     {
         public string StatusId { get; set; }
         public string Name { get; set; }
+
+        public ICollection<Ticket> Tickets { get; set; }        // navigation property
     }
 }

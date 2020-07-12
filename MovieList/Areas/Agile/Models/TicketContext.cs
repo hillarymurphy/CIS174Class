@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.View;
 
 namespace MovieList.Areas.Agile.Models
 {
@@ -17,24 +18,16 @@ namespace MovieList.Areas.Agile.Models
         public DbSet<Status> Statuses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Status>().HasData(
-                new Status { StatusId = "todo", Name = "To Do" },
-                new Status { StatusId = "inprogress", Name = "In Progress" },
-                new Status { StatusId = "qa", Name = "Quality Assurance" },
-                new Status { StatusId = "done", Name = "Done" }
-            );
-            modelBuilder.Entity<Ticket>().HasData(
-                new
-                {
-                    TicketId = 1,
-                    TicketName = "Agile Index",
-                    Description = "Set up Index Page",
-                    Sprint = 1,
-                    Point = 2,
-                    StatusId = "todo"
-                }
-            );
-        }
+        { 
+            // Remove cascading delete with Status
+            modelBuilder.Entity<Ticket>().HasOne(t => t.Status)
+                .WithMany(s => s.Tickets)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // seed initial data
+            modelBuilder.ApplyConfiguration(new SeedTickets());
+            modelBuilder.ApplyConfiguration(new SeedStatuses());
+         }
+
     }
 }

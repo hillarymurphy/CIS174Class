@@ -10,8 +10,8 @@ using MovieList.Areas.Agile.Models;
 namespace MovieList.Migrations.Ticket
 {
     [DbContext(typeof(TicketContext))]
-    [Migration("20200704012728_InitialAgile")]
-    partial class InitialAgile
+    [Migration("20200712041318_AgileDBSetUp")]
+    partial class AgileDBSetUp
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -65,10 +65,10 @@ namespace MovieList.Migrations.Ticket
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
 
-                    b.Property<int?>("Point")
-                        .IsRequired()
+                    b.Property<int>("Point")
                         .HasColumnType("int");
 
                     b.Property<int?>("Sprint")
@@ -81,7 +81,8 @@ namespace MovieList.Migrations.Ticket
 
                     b.Property<string>("TicketName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.HasKey("TicketId");
 
@@ -104,9 +105,9 @@ namespace MovieList.Migrations.Ticket
             modelBuilder.Entity("MovieList.Areas.Agile.Models.Ticket", b =>
                 {
                     b.HasOne("MovieList.Areas.Agile.Models.Status", "Status")
-                        .WithMany()
+                        .WithMany("Tickets")
                         .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

@@ -24,6 +24,8 @@
     <Compile Remove="Migrations\20200604010927_IncludeGenreinMovie.Designer.cs" />
     <Compile Remove="Migrations\Contact\20200605185447_AddContactDatabase.cs" />
     <Compile Remove="Migrations\Contact\20200605185447_AddContactDatabase.Designer.cs" />
+    <Compile Remove="Migrations\Ticket\20200712035803_AgileDbSetUp.cs" />
+    <Compile Remove="Migrations\Ticket\20200712035803_AgileDbSetUp.Designer.cs" />
     <Compile Remove="Models\Contact.cs" />
     <Compile Remove="Models\ContactContext.cs" />
     <Compile Remove="Models\GlobalVar.cs" />

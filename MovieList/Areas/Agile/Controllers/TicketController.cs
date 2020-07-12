@@ -33,8 +33,9 @@ namespace MovieList.Areas.Agile.Controllers
 
         public IActionResult Add()
         {
-            ViewBag.Statuses = context.Statuses.ToList();
-            return View();
+            ViewBag.Action = "Add";
+            ViewBag.Statuses = context.Statuses.OrderBy(s => s.Name).ToList();
+            return View("Add", new Ticket()); 
         }
 
         [HttpPost]

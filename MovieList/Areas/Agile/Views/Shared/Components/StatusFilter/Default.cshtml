@@ -1,0 +1,10 @@
+﻿@model IEnumerable<Status>
+
+@{
+    int id = Convert.ToInt32(ViewContext.RouteData.Values["id"]);
+}
+
+@foreach (Status s in Model)
+{
+    <button type="submit" action="Index" id="@s.StatusId" class="mr-1 mb-2">@s.Name</button>
+                }

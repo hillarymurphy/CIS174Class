@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using MovieList.Models;
+using Microsoft.AspNetCore.Identity;
+using MovieList.Areas.Agile.Models;
 
 namespace MovieList
 {
@@ -37,6 +39,9 @@ namespace MovieList
             services.AddDbContext<MovieList.Areas.Agile.Models.TicketContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TicketContext")));
             // make urls lowercase and end with a trailing slash
             services.AddRouting(options => { options.LowercaseUrls = true; options.AppendTrailingSlash = true; });
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<TicketContext>()
+                .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +61,7 @@ namespace MovieList
             app.UseStaticFiles();
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             // adding set up for using session state - must be before UseEndpoints
